@@ -235,6 +235,9 @@
     <a class="nav-item" onclick="switchPage('produk')" id="nav-produk">
         <span class="icon">🍞</span> Produk
     </a>
+    <a class="nav-item" onclick="switchPage('banner')" id="nav-banner">
+        <span class="icon">🖼️</span> Banner Promo
+    </a>
     <a class="nav-item" onclick="switchPage('user')" id="nav-user">
         <span class="icon">👥</span> User
     </a>
@@ -461,6 +464,50 @@
                         </tr>
                         @empty
                         <tr><td colspan="6" class="empty-row">📭 Belum ada user terdaftar</td></tr>
+                        @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════ PAGE: BANNER PROMO ══════ -->
+        <div class="page" id="page-banner">
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-head-title">🖼️ Kelola Banner Promo (Tampil di Beranda Flutter)</div>
+                    <button class="btn btn-primary" onclick="openModal('modalTambahBanner')">＋ Tambah Banner Promo</button>
+                </div>
+                <div class="card-body">
+                    <table>
+                        <thead><tr>
+                            <th>ID</th>
+                            <th>Icon</th>
+                            <th>Badge / Tag Diskon</th>
+                            <th>Judul Promo</th>
+                            <th>Deskripsi Promo</th>
+                            <th style="text-align:center">Aksi</th>
+                        </tr></thead>
+                        <tbody>
+                        @forelse(($banners ?? []) as $b)
+                        <tr>
+                            <td><strong>#{{ $b->id }}</strong></td>
+                            <td style="font-size:24px">{{ $b->gambar ?? '🎂' }}</td>
+                            <td><span class="badge badge-gps">{{ $b->badge }}</span></td>
+                            <td style="font-weight:600">{{ $b->judul }}</td>
+                            <td style="max-width:260px;font-size:12.5px;color:var(--muted)">{{ $b->deskripsi }}</td>
+                            <td style="text-align:center">
+                                <div style="display:flex;gap:6px;justify-content:center">
+                                    <button class="btn btn-edit btn-sm" onclick="openEditBanner({{ $b->id }}, '{{ addslashes($b->badge) }}', '{{ addslashes($b->judul) }}', '{{ addslashes($b->deskripsi) }}', '{{ addslashes($b->gambar) }}')">✏️ Edit</button>
+                                    <form action="/admin/banner/{{ $b->id }}/delete" method="POST" onsubmit="return confirm('Hapus promo banner ini?')">
+                                        @csrf
+                                        <button class="btn btn-delete btn-sm">🗑️ Hapus</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr><td colspan="6" class="empty-row">📭 Belum ada banner promo. Klik Tambah Banner.</td></tr>
                         @endforelse
                         </tbody>
                     </table>
@@ -726,9 +773,65 @@
                 <label>Password Baru (Opsional)</label>
                 <input type="password" name="password" placeholder="Kosongkan jika tidak diubah">
             </div>
+<!-- MODAL: TAMBAH BANNER PROMO -->
+<div class="overlay" id="modalTambahBanner">
+    <div class="modal-box">
+        <div class="modal-title">🖼️ Tambah Banner Promo Baru</div>
+        <form action="/admin/banner/store" method="POST">
+            @csrf
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Tag / Badge Diskon</label>
+                    <input type="text" name="badge" placeholder="PROMO SPESIAL 30%" required>
+                </div>
+                <div class="form-group">
+                    <label>Icon / Emoji Gambar</label>
+                    <input type="text" name="gambar" placeholder="🎂" maxlength="5">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Judul Utama Promo</label>
+                <input type="text" name="judul" placeholder="Kue Lezat Untuk Momen Spesial Anda" required>
+            </div>
+            <div class="form-group">
+                <label>Deskripsi Singkat</label>
+                <textarea name="deskripsi" placeholder="Pesan sekarang & antar presisi ke rumah via GPS!"></textarea>
+            </div>
             <div class="modal-actions">
-                <button type="button" class="btn btn-cancel" onclick="closeModal('modalEditUser')">Batal</button>
-                <button type="submit" class="btn btn-primary">💾 Simpan</button>
+                <button type="button" class="btn btn-cancel" onclick="closeModal('modalTambahBanner')">Batal</button>
+                <button type="submit" class="btn btn-primary">＋ Simpan Banner</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL: EDIT BANNER PROMO -->
+<div class="overlay" id="modalEditBanner">
+    <div class="modal-box">
+        <div class="modal-title">✏️ Edit Banner Promo</div>
+        <form id="formEditBanner" action="" method="POST">
+            @csrf
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Tag / Badge Diskon</label>
+                    <input type="text" id="eb_badge" name="badge" required>
+                </div>
+                <div class="form-group">
+                    <label>Icon / Emoji</label>
+                    <input type="text" id="eb_gambar" name="gambar" maxlength="5">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Judul Utama Promo</label>
+                <input type="text" id="eb_judul" name="judul" required>
+            </div>
+            <div class="form-group">
+                <label>Deskripsi Singkat</label>
+                <textarea id="eb_deskripsi" name="deskripsi"></textarea>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-cancel" onclick="closeModal('modalEditBanner')">Batal</button>
+                <button type="submit" class="btn btn-primary">💾 Simpan Perubahan</button>
             </div>
         </form>
     </div>
@@ -804,6 +907,16 @@
         document.getElementById('eu_name').value  = name;
         document.getElementById('eu_email').value = email;
         openModal('modalEditUser');
+    }
+
+    // ── EDIT BANNER ───────────────────────────────────────────────────────────
+    function openEditBanner(id, badge, judul, deskripsi, gambar) {
+        document.getElementById('formEditBanner').action = '/admin/banner/' + id + '/update';
+        document.getElementById('eb_badge').value     = badge;
+        document.getElementById('eb_judul').value     = judul;
+        document.getElementById('eb_deskripsi').value = deskripsi;
+        document.getElementById('eb_gambar').value    = gambar;
+        openModal('modalEditBanner');
     }
 
     // ── ESC CLOSE MODAL ───────────────────────────────────────────────────────

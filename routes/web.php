@@ -1,9 +1,8 @@
-<?php
-
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
 
 // ─── Halaman Utama Admin ───────────────────────────────────────────────────
 Route::get('/admin', [PesananController::class, 'index']);
@@ -22,6 +21,11 @@ Route::post('/admin/user/{id}/delete',       [UserController::class,    'destroy
 Route::post('/admin/produk/store',           [ProdukController::class,  'storeWeb']);
 Route::post('/admin/produk/{id}/update',     [ProdukController::class,  'updateWeb']);
 Route::post('/admin/produk/{id}/delete',     [ProdukController::class,  'destroyWeb']);
+
+// ─── CRUD Banner Promo Web Admin ───────────────────────────────────────────
+Route::post('/admin/banner/store',           [BannerController::class,  'storeWeb']);
+Route::post('/admin/banner/{id}/update',     [BannerController::class,  'updateWeb']);
+Route::post('/admin/banner/{id}/delete',     [BannerController::class,  'destroyWeb']);
 
 // ─── Redirect Root ─────────────────────────────────────────────────────────
 Route::get('/', function () {

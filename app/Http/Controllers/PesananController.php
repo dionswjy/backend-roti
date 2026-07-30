@@ -66,6 +66,7 @@ class PesananController extends Controller
         $pesanans = Pesanan::latest()->get();
         $users    = User::latest()->get();
         $produks  = Produk::latest()->get();
+        $banners  = Banner::latest()->get();
 
         $totalPesanan = $pesanans->count();
         $totalOmset   = $pesanans->sum(function ($p) {
@@ -77,7 +78,7 @@ class PesananController extends Controller
         })->count();
         $totalProduk = $produks->count();
 
-        return view('admin', compact('pesanans', 'users', 'produks', 'totalPesanan', 'totalOmset', 'pesananHariIni', 'totalProduk'));
+        return view('admin', compact('pesanans', 'users', 'produks', 'banners', 'totalPesanan', 'totalOmset', 'pesananHariIni', 'totalProduk'));
     }
 
     // Tambah Pesanan Baru dari Admin Web
