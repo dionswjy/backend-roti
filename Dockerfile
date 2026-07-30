@@ -25,14 +25,14 @@ RUN composer install --no-dev --optimize-autoloader --no-scripts
 # Copy semua file project
 COPY . .
 
-# Setup environment dan database
+# Setup environment dan database (support both /var/www/html dan /app path)
 RUN cp .env.example .env \
     && php artisan key:generate --force \
-    && mkdir -p database storage/framework/views storage/framework/sessions storage/framework/cache storage/logs \
-    && touch database/database.sqlite \
-    && chmod -R 777 storage bootstrap/cache database \
+    && mkdir -p database storage/framework/views storage/framework/sessions storage/framework/cache storage/logs /app/database \
+    && touch database/database.sqlite /app/database/database.sqlite \
+    && chmod -R 777 storage bootstrap/cache database /app \
     && php artisan migrate --force
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"]
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
