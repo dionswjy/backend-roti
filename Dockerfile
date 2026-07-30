@@ -28,7 +28,7 @@ COPY . .
 # Setup environment dan database
 RUN cp .env.example .env \
     && php artisan key:generate --force \
-    && mkdir -p database \
+    && mkdir -p database storage/framework/views storage/framework/sessions storage/framework/cache \
     && touch database/database.sqlite \
     && chmod -R 777 storage bootstrap/cache database \
     && php artisan migrate --force \
@@ -36,4 +36,4 @@ RUN cp .env.example .env \
 
 EXPOSE 8000 8080
 
-CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
+CMD ["sh", "-c", "php artisan optimize:clear && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"]
