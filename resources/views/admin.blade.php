@@ -364,7 +364,7 @@
                             </td>
                             <td><span class="badge badge-status">{{ $p->status ?? 'Diproses' }}</span></td>
                             <td style="text-align:center;white-space:nowrap">
-                                <button class="btn btn-edit btn-sm" onclick="openEditPesanan({{$p->id}},'{{addslashes($p->nama_pelanggan)}}','{{addslashes($p->pesanan)}}','{{addslashes($p->total_harga)}}','{{addslashes($p->status ?? '')}}')">✏️ Edit</button>
+                                <button class="btn btn-edit btn-sm" onclick="openEditPesanan({{$p->id}},'{{addslashes((string)($p->nama_pelanggan ?? ''))}}','{{addslashes((string)($p->pesanan ?? ''))}}','{{addslashes((string)($p->total_harga ?? ''))}}','{{addslashes((string)($p->status ?? ''))}}')">✏️ Edit</button>
                                 <form action="/admin/pesanan/{{$p->id}}/delete" method="POST" style="display:inline" onsubmit="return confirm('Hapus pesanan #{{$p->id}}?')">
                                     @csrf
                                     <button type="submit" class="btn btn-delete btn-sm">🗑️</button>
@@ -413,8 +413,8 @@
                             <td>⭐ {{ $pr->rating }}</td>
                             <td><span class="badge badge-done">{{ $pr->badge }}</span></td>
                             <td style="text-align:center;white-space:nowrap">
-                                <button class="btn btn-edit btn-sm" onclick="openEditProduk({{$pr->id}},'{{addslashes($pr->nama)}}','{{addslashes($pr->harga)}}','{{addslashes($pr->gambar)}}','{{addslashes($pr->kategori ?? '')}}','{{addslashes($pr->rating ?? '')}}','{{addslashes($pr->badge ?? '')}}','{{addslashes($pr->deskripsi ?? '')}}')">✏️ Edit</button>
-                                <form action="/admin/produk/{{$pr->id}}/delete" method="POST" style="display:inline" onsubmit="return confirm('Hapus produk {{addslashes($pr->nama)}}?')">
+                                <button class="btn btn-edit btn-sm" onclick="openEditProduk({{$pr->id}},'{{addslashes((string)($pr->nama ?? ''))}}','{{addslashes((string)($pr->harga ?? ''))}}','{{addslashes((string)($pr->gambar ?? ''))}}','{{addslashes((string)($pr->kategori ?? ''))}}','{{addslashes((string)($pr->rating ?? ''))}}','{{addslashes((string)($pr->badge ?? ''))}}','{{addslashes((string)($pr->deskripsi ?? ''))}}')">✏️ Edit</button>
+                                <form action="/admin/produk/{{$pr->id}}/delete" method="POST" style="display:inline" onsubmit="return confirm('Hapus produk {{addslashes((string)($pr->nama ?? ''))}}?')">
                                     @csrf
                                     <button type="submit" class="btn btn-delete btn-sm">🗑️</button>
                                 </form>
@@ -455,8 +455,8 @@
                             <td style="color:var(--muted)">{{ $u->email }}</td>
                             <td style="font-size:12px;color:var(--muted)">{{ $u->created_at ? $u->created_at->format('d M Y, H:i') : '-' }}</td>
                             <td style="text-align:center;white-space:nowrap">
-                                <button class="btn btn-edit btn-sm" onclick="openEditUser({{$u->id}},'{{addslashes($u->name)}}','{{addslashes($u->email)}}')">✏️ Edit</button>
-                                <form action="/admin/user/{{$u->id}}/delete" method="POST" style="display:inline" onsubmit="return confirm('Hapus user {{addslashes($u->name)}}?')">
+                                <button class="btn btn-edit btn-sm" onclick="openEditUser({{$u->id}},'{{addslashes((string)($u->name ?? ''))}}','{{addslashes((string)($u->email ?? ''))}}')">✏️ Edit</button>
+                                <form action="/admin/user/{{$u->id}}/delete" method="POST" style="display:inline" onsubmit="return confirm('Hapus user {{addslashes((string)($u->name ?? ''))}}?')">
                                     @csrf
                                     <button type="submit" class="btn btn-delete btn-sm">🗑️</button>
                                 </form>
