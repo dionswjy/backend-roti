@@ -31,10 +31,8 @@ RUN cp .env.example .env \
     && mkdir -p database \
     && touch database/database.sqlite \
     && chmod -R 777 storage bootstrap/cache database \
-    && php artisan migrate --force \
-    && php artisan config:cache \
-    && php artisan route:cache
+    && php artisan optimize:clear
 
 EXPOSE 8000
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+CMD ["sh", "-c", "php artisan optimize:clear && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000"]
