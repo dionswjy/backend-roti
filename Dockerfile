@@ -33,6 +33,4 @@ RUN cp .env.example .env \
     && chmod -R 777 storage bootstrap/cache database \
     && php artisan optimize:clear
 
-EXPOSE 8000
-
-CMD ["sh", "-c", "php artisan optimize:clear && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000"]
+CMD ["sh", "-c", "php artisan optimize:clear && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"]
