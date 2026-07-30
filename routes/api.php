@@ -6,6 +6,7 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\UserController;
 
 // Route API Pesanan
+Route::get('/pesanan', [PesananController::class, 'indexApi']);
 Route::post('/pesanan', [PesananController::class, 'storeApi']);
 
 // Route API Produk

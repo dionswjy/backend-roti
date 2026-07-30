@@ -9,7 +9,25 @@ use Illuminate\Http\Request;
 
 class PesananController extends Controller
 {
-    // Fungsi 1: Untuk API (menerima data dari aplikasi Flutter)
+    // Fungsi 1: Ambil daftar pesanan (API GET)
+    public function indexApi(Request $request)
+    {
+        $nama = $request->query('nama_pelanggan');
+        $query = Pesanan::latest();
+
+        if (!empty($nama) && $nama !== 'User BNSP' && $nama !== 'Tamu BNSP') {
+            $query->where('nama_pelanggan', 'LIKE', '%' . $nama . '%');
+        }
+
+        $pesanans = $query->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $pesanans
+        ], 200);
+    }
+
+    // Fungsi 2: Simpan pesanan baru (API POST)
     public function storeApi(Request $request)
     {
         $namaPelanggan = $request->input('nama_pelanggan') ?? $request->input('nama') ?? 'Pelanggan Express';
