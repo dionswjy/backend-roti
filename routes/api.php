@@ -1,3 +1,5 @@
+<?php
+
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\ProdukController;
