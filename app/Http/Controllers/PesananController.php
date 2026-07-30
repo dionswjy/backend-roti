@@ -63,10 +63,10 @@ class PesananController extends Controller
     // Fungsi 2: Untuk Web Admin (menampilkan data & management ke browser)
     public function index()
     {
-        $pesanans = Pesanan::latest()->get();
-        $users    = User::latest()->get();
-        $produks  = Produk::latest()->get();
-        $banners  = Banner::latest()->get();
+        try { $pesanans = Pesanan::latest()->get(); } catch (\Throwable $e) { $pesanans = collect(); }
+        try { $users    = User::latest()->get(); } catch (\Throwable $e) { $users = collect(); }
+        try { $produks  = Produk::latest()->get(); } catch (\Throwable $e) { $produks = collect(); }
+        try { $banners  = Banner::latest()->get(); } catch (\Throwable $e) { $banners = collect(); }
 
         $totalPesanan = $pesanans->count();
         $totalOmset   = $pesanans->sum(function ($p) {

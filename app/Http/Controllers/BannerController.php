@@ -10,7 +10,12 @@ class BannerController extends Controller
     // API GET: Ambil daftar promo banner untuk Flutter
     public function indexApi()
     {
-        $banners = Banner::latest()->get();
+        try {
+            $banners = Banner::latest()->get();
+        } catch (\Throwable $e) {
+            $banners = collect();
+        }
+
         if ($banners->isEmpty()) {
             $banners = [
                 [
