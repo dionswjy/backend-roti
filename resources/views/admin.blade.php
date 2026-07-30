@@ -498,7 +498,7 @@
                             <td style="max-width:260px;font-size:12.5px;color:var(--muted)">{{ $b->deskripsi }}</td>
                             <td style="text-align:center">
                                 <div style="display:flex;gap:6px;justify-content:center">
-                                    <button class="btn btn-edit btn-sm" onclick="openEditBanner({{ $b->id }}, '{{ addslashes($b->badge) }}', '{{ addslashes($b->judul) }}', '{{ addslashes($b->deskripsi) }}', '{{ addslashes($b->gambar) }}')">✏️ Edit</button>
+                                    <button class="btn btn-edit btn-sm" onclick="openEditBanner({{ $b->id }}, '{{ addslashes((string)$b->badge) }}', '{{ addslashes((string)$b->judul) }}', '{{ addslashes((string)$b->deskripsi) }}', '{{ addslashes((string)$b->gambar) }}')">✏️ Edit</button>
                                     <form action="/admin/banner/{{ $b->id }}/delete" method="POST" onsubmit="return confirm('Hapus promo banner ini?')">
                                         @csrf
                                         <button class="btn btn-delete btn-sm">🗑️ Hapus</button>
