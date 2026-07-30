@@ -30,7 +30,8 @@ RUN cp .env.example .env \
     && php artisan key:generate --force \
     && mkdir -p database \
     && touch database/database.sqlite \
-    && chmod -R 777 storage bootstrap/cache database \
-    && php artisan optimize:clear
+    && chmod -R 777 storage bootstrap/cache database
 
-CMD ["sh", "-c", "php artisan optimize:clear && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"]
+EXPOSE 8000
+
+CMD ["sh", "-c", "php artisan optimize:clear && php artisan migrate --force && php -S 0.0.0.0:${PORT:-8000} -t public"]
