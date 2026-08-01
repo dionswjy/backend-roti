@@ -31,7 +31,8 @@ RUN cp .env.example .env \
     && mkdir -p database storage/framework/views storage/framework/sessions storage/framework/cache storage/logs /app/database \
     && touch database/database.sqlite /app/database/database.sqlite \
     && chmod -R 777 storage bootstrap/cache database /app \
-    && php artisan migrate --force
+    && php artisan migrate --force \
+    && php artisan db:seed --force
 
 EXPOSE 8000
 
